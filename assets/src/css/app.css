@@ -104,4 +104,9 @@
     .wp-block-separator {
         @apply border-gray-200;
     }
+
+    /* Ghost button block style — registered in editor.js */
+    .wp-block-button.is-style-ghost .wp-block-button__link {
+        @apply bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors;
+    }
 }

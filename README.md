@@ -66,8 +66,78 @@ npm run build        # Production build → dist/
 |----------|-------|
 | Reusable utility class (button, badge) | `@layer components` in `assets/src/css/app.css` |
 | Repeatable section (hero, features grid) | `template-parts/` PHP file + ACF field group |
-| Client-editable content section | Block pattern in `inc/blocks.php` |
+| Client-editable layout | Block pattern in `patterns/` |
 | Page-specific layout | `templates/template-{name}.php` |
+
+## Block editor — client-editable pages
+
+For clients who build pages themselves in the block editor, the theme provides three levels of customization:
+
+### Block Patterns
+
+Pre-built layouts clients insert with one click (⊕ → Patterns). Defined as `.php` files in `patterns/` — WordPress 6.0+ auto-discovers them.
+
+**Included:** `starter-theme/hero` (dark hero with CTA buttons), `starter-theme/text-image` (two-column text + image)
+
+**Adding a new pattern:** create `patterns/my-pattern.php` with metadata header:
+
+```php
+<?php
+/**
+ * Title: My Pattern
+ * Slug: starter-theme/my-pattern
+ * Categories: banner
+ */
+?>
+<!-- wp:group ... -->
+```
+
+Category options: `banner`, `columns`, `featured`, `gallery`, `header`, `text`.
+
+### Block Styles
+
+Custom visual variants for existing blocks. Registered in `assets/src/js/editor.js`, styled in `assets/src/css/app.css` (frontend) and `editor.css` (WYSIWYG).
+
+**Included:** `is-style-ghost` on `core/button` — transparent background, primary-color border.
+
+**Adding a new style:**
+
+```js
+// editor.js
+registerBlockStyle('core/image', {
+    name: 'rounded',
+    label: 'Rounded',
+});
+```
+
+```css
+/* app.css */
+.wp-block-image.is-style-rounded img {
+    @apply rounded-full;
+}
+```
+
+### ACF Blocks (ACF Pro required)
+
+Custom blocks with PHP render templates and no JavaScript. Fields are configured in ACF UI (Location: Block = `acf/{name}`) or via JSON in `acf-json/`.
+
+**Included:** `acf/testimonial` — quote, author, role, avatar. Template: `template-parts/blocks/testimonial.php`.
+
+**Adding a new ACF block:**
+
+1. Register in `inc/acf.php` → `acf/init` hook via `acf_register_block_type()`
+2. Create `template-parts/blocks/{name}.php` — use `st_get_field()` and `get_block_wrapper_attributes()`
+3. Create field group in ACF Pro UI → Location: Block = `acf/{name}`
+4. Block auto-appears in allowed block list (picked up by `st_get_acf_block_names()`)
+
+### When to use what
+
+| Need | Use |
+|------|-----|
+| Client pastes in a ready layout and edits text/images | Block Pattern |
+| Client chooses a visual variant of an existing block | Block Style |
+| Client fills structured fields (name, photo, rating) | ACF Block |
+| Developer builds a fixed, non-editable section | `template-parts/` PHP file |
 
 ## Code quality
 

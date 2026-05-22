@@ -70,3 +70,27 @@ if (function_exists('acf_add_options_page')) {
         'icon_url'   => 'dashicons-admin-customizer',
     ]);
 }
+
+// Register ACF Blocks (requires ACF Pro 5.8+)
+// Field groups are created in ACF UI with Location Rule: Block = acf/{name}
+// or via JSON sync in acf-json/
+add_action('acf/init', function (): void {
+    if (! function_exists('acf_register_block_type')) {
+        return;
+    }
+
+    acf_register_block_type([
+        'name'            => 'testimonial',
+        'title'           => __('Testimonial', 'starter-theme'),
+        'description'     => __('Single testimonial with quote, author, role, and avatar.', 'starter-theme'),
+        'render_template' => get_template_directory() . '/template-parts/blocks/testimonial.php',
+        'category'        => 'theme',
+        'icon'            => 'format-quote',
+        'keywords'        => ['testimonial', 'quote', 'review'],
+        'supports'        => [
+            'align'  => false,
+            'mode'   => false,
+            'jsx'    => false,
+        ],
+    ]);
+});
