@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply text-gray-900 bg-white;
+  }
+
+  /* WordPress alignment classes */
+  .alignleft  { @apply float-left mr-6 mb-4; }
+  .alignright { @apply float-right ml-6 mb-4; }
+  .aligncenter { @apply mx-auto block my-4; }
+  .alignwide  { @apply -mx-8; }
+  .alignfull  { @apply w-screen relative left-1/2 right-1/2 -translate-x-1/2; }
+
+  img { @apply max-w-full h-auto; }
+}
+
+@layer components {
+  /* Prose / rich text content */
+  .entry-content {
+    @apply prose prose-lg max-w-none
+      prose-headings:font-bold prose-headings:text-gray-900
+      prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+      prose-img:rounded-xl prose-img:shadow-sm;
+  }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    @apply mb-6 text-sm text-gray-500;
+  }
+
+  /* WordPress pagination */
+  .pagination,
+  .posts-navigation,
+  .post-navigation {
+    @apply mt-12 flex justify-center;
+  }
+
+  .page-numbers {
+    @apply inline-flex items-center px-3 py-1.5 rounded text-sm font-medium text-gray-700 hover:bg-gray-100;
+  }
+
+  .page-numbers.current {
+    @apply bg-primary text-white hover:bg-primary;
+  }
+
+  /* Skip link */
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .sr-only.focus\:not-sr-only:focus {
+    @apply static w-auto h-auto p-2 m-0 overflow-visible whitespace-normal;
+    clip: auto;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary text-white hover:bg-blue-700 focus:ring-primary;
+  }
+
+  .btn-secondary {
+    @apply btn bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus:ring-gray-300;
+  }
+
+  /* Card */
+  .card {
+    @apply bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow;
+  }
+
+  /* WordPress block core styles overrides */
+  .wp-block-image img {
+    @apply rounded-xl;
+  }
+
+  .wp-block-quote {
+    @apply border-l-4 border-primary pl-6 italic text-gray-700;
+  }
+
+  .wp-block-separator {
+    @apply border-gray-200;
+  }
+}
