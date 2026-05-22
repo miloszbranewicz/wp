@@ -92,6 +92,14 @@ add_action('after_setup_theme', function (): void {
     }
 });
 
+// Vite scripts must be ES modules for HMR to work
+add_filter('script_loader_tag', function (string $tag, string $handle): string {
+    if (in_array($handle, ['vite-client', 'app-js', 'editor-js'], true)) {
+        $tag = str_replace(' src=', ' type="module" crossorigin src=', $tag);
+    }
+    return $tag;
+}, 10, 2);
+
 function is_woocommerce_page_maybe(): bool {
     return function_exists('is_woocommerce') && (is_woocommerce() || is_cart() || is_checkout() || is_account_page());
 }

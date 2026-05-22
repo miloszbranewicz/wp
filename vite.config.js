@@ -39,6 +39,11 @@ export default defineConfig({
     strictPort: true,
     cors: true,
     origin: 'http://localhost:5173',
+    hmr: {
+      host: 'localhost',
+      protocol: 'ws',
+      port: 5173,
+    },
   },
   css: {
     devSourcemap: true,
