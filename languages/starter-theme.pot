@@ -1,0 +1,92 @@
+# Copyright (C) 2025 Your Software House
+# This file is distributed under the same license as the Starter Theme package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Starter Theme 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/your-org/starter-theme/issues\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-01-01T00:00:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.x\n"
+"X-Domain: starter-theme\n"
+
+#. Theme Name of the theme
+msgid "Starter Theme"
+msgstr ""
+
+#. Description of the theme
+msgid "WordPress starter theme — hybrid (classic + block editor), SEO & performance focused."
+msgstr ""
+
+msgid "Primary Menu"
+msgstr ""
+
+msgid "Footer Menu"
+msgstr ""
+
+msgid "Skip to content"
+msgstr ""
+
+msgid "Toggle navigation"
+msgstr ""
+
+msgid "Read more"
+msgstr ""
+
+msgid "Nothing found"
+msgstr ""
+
+msgid "Try searching or browse the homepage."
+msgstr ""
+
+msgid "Search results for: %s"
+msgstr ""
+
+msgid "Page not found"
+msgstr ""
+
+msgid "The page you are looking for does not exist or has been moved."
+msgstr ""
+
+msgid "Back to homepage"
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+msgid "Breadcrumb"
+msgstr ""
+
+msgid "Search: %s"
+msgstr ""
+
+msgid "404 Not Found"
+msgstr ""
+
+msgid "By"
+msgstr ""
+
+msgid "Posts navigation"
+msgstr ""
+
+msgid "Posts"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "Page navigation"
+msgstr ""
+
+msgid "Theme Settings"
+msgstr ""
+
+msgid "Footer Menu"
+msgstr ""

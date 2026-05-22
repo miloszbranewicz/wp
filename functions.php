@@ -4,6 +4,7 @@ defined('ABSPATH') || exit;
 foreach ([
     'inc/setup.php',
     'inc/enqueue.php',
+    'inc/helpers.php',
     'inc/performance.php',
     'inc/seo.php',
     'inc/blocks.php',
