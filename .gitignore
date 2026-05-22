@@ -1,8 +1,12 @@
 node_modules/
 dist/
+vendor/
 .DS_Store
 *.log
 .env
 .env.*
 !.env.example
 .vite-dev
+.phpstan/
+languages/*.po
+languages/*.mo

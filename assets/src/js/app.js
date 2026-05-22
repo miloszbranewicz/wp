@@ -6,7 +6,7 @@
 // Mobile navigation toggle
 document.addEventListener('DOMContentLoaded', () => {
     const toggle = document.getElementById('mobile-menu-toggle');
-    const menu   = document.getElementById('mobile-menu');
+    const menu = document.getElementById('mobile-menu');
 
     if (toggle && menu) {
         toggle.addEventListener('click', () => {
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Close on outside click
         document.addEventListener('click', (e) => {
-            if (! toggle.contains(e.target) && ! menu.contains(e.target)) {
+            if (!toggle.contains(e.target) && !menu.contains(e.target)) {
                 menu.classList.add('hidden');
                 toggle.setAttribute('aria-expanded', 'false');
             }

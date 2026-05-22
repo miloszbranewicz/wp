@@ -89,6 +89,16 @@ Edit `theme.json` → `settings.color.palette`. CSS custom properties are auto-g
 
 Register CPTs and taxonomies via **ACF Pro** (version 6.x has built-in CPT/Taxonomy registration). Field group JSON is auto-saved to `acf-json/`.
 
+### Translation
+
+All user-facing strings use `__()`, `_e()`, `esc_html__()` with the `starter-theme` domain. Generate a `.pot` template for translators:
+
+```bash
+npm run makepot   # → languages/starter-theme.pot
+```
+
+Then open the `.pot` file in **PoEdit** or install **Loco Translate** (WordPress plugin) for in-browser translation. Compiled `.mo` / `.po` files live in `languages/` and are excluded from git (add them to the deploy rsync).
+
 ## File map
 
 | Path | Purpose |

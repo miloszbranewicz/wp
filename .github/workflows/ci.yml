@@ -21,8 +21,23 @@ jobs:
       - name: Run PHPCS
         run: phpcs --standard=phpcs.xml
 
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+          coverage: none
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan analyse --no-progress
+
   js-lint:
-    name: ESLint
+    name: ESLint + Prettier
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,6 +47,7 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run lint:js
+      - run: npm run format:check
 
   build:
     name: Vite Build

@@ -1,0 +1,18 @@
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+
+parameters:
+    level: 5
+    paths:
+        - inc/
+        - templates/
+        - template-parts/
+    excludePaths:
+        - '*/vendor/*'
+        - '*/node_modules/*'
+        - '*/dist/*'
+    ignoreErrors:
+        # ACF functions are optional — guarded by function_exists() in the code
+        - '#Function (get_field|get_sub_field|have_rows|the_row|get_row_layout|acf_add_local_field_group|acf_add_options_page) not found#'
+        # CF7 shortcode check
+        - '#Function wpcf7_get_contact_form_by_hash not found#'

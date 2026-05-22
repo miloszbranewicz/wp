@@ -12,8 +12,4 @@ domReady(() => {
 });
 
 // Add custom block category
-addFilter(
-    'blocks.registerBlockType',
-    'starter-theme/block-defaults',
-    (settings) => settings,
-);
+addFilter('blocks.registerBlockType', 'starter-theme/block-defaults', (settings) => settings);

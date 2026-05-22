@@ -3,15 +3,20 @@
 
 /* Mirror front-end prose styles in the block editor */
 .editor-styles-wrapper .block-editor-rich-text__editable {
-  font-family: inherit;
+    font-family: inherit;
 }
 
 .editor-styles-wrapper {
-  max-width: 768px;
-  margin: 0 auto;
-  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  font-size: 1rem;
-  line-height: 1.6;
+    max-width: 768px;
+    margin: 0 auto;
+    font-family:
+        'Inter',
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
 }
 
 .editor-styles-wrapper h1,
@@ -20,26 +25,26 @@
 .editor-styles-wrapper h4,
 .editor-styles-wrapper h5,
 .editor-styles-wrapper h6 {
-  font-weight: 700;
-  color: #111827;
-  line-height: 1.25;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.25;
 }
 
 .editor-styles-wrapper a {
-  color: var(--wp--preset--color--primary, #2563eb);
+    color: var(--wp--preset--color--primary, #2563eb);
 }
 
 .editor-styles-wrapper p {
-  margin-bottom: 1.25em;
+    margin-bottom: 1.25em;
 }
 
 .editor-styles-wrapper img {
-  border-radius: 0.75rem;
+    border-radius: 0.75rem;
 }
 
 .editor-styles-wrapper blockquote {
-  border-left: 4px solid var(--wp--preset--color--primary, #2563eb);
-  padding-left: 1.5rem;
-  font-style: italic;
-  color: #4b5563;
+    border-left: 4px solid var(--wp--preset--color--primary, #2563eb);
+    padding-left: 1.5rem;
+    font-style: italic;
+    color: #4b5563;
 }

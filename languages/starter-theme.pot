@@ -1,92 +1,140 @@
-# Copyright (C) 2025 Your Software House
+# Copyright (C) 2026 Starter Theme
 # This file is distributed under the same license as the Starter Theme package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Starter Theme 1.0.0\n"
-"Report-Msgid-Bugs-To: https://github.com/your-org/starter-theme/issues\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: Starter Theme\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-01-01T00:00:00+00:00\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.x\n"
-"X-Domain: starter-theme\n"
+"POT-Creation-Date: 2026-05-22 17:09+0000\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#. Theme Name of the theme
-msgid "Starter Theme"
-msgstr ""
-
-#. Description of the theme
-msgid "WordPress starter theme — hybrid (classic + block editor), SEO & performance focused."
-msgstr ""
-
-msgid "Primary Menu"
-msgstr ""
-
-msgid "Footer Menu"
-msgstr ""
-
-msgid "Skip to content"
-msgstr ""
-
-msgid "Toggle navigation"
-msgstr ""
-
-msgid "Read more"
-msgstr ""
-
-msgid "Nothing found"
-msgstr ""
-
-msgid "Try searching or browse the homepage."
-msgstr ""
-
-msgid "Search results for: %s"
-msgstr ""
-
+#: ../404.php:8
 msgid "Page not found"
 msgstr ""
 
+#: ../404.php:11
 msgid "The page you are looking for does not exist or has been moved."
 msgstr ""
 
+#: ../404.php:14
 msgid "Back to homepage"
 msgstr ""
 
-msgid "Home"
+#: ../footer.php:15, ../inc/setup.php:26
+msgid "Footer Menu"
 msgstr ""
 
-msgid "Breadcrumb"
+#: ../header.php:12
+msgid "Skip to content"
 msgstr ""
 
-msgid "Search: %s"
-msgstr ""
-
-msgid "404 Not Found"
-msgstr ""
-
-msgid "By"
-msgstr ""
-
-msgid "Posts navigation"
-msgstr ""
-
-msgid "Posts"
-msgstr ""
-
-msgid "Previous"
-msgstr ""
-
-msgid "Next"
-msgstr ""
-
-msgid "Page navigation"
-msgstr ""
-
+#: ../inc/acf.php:66, ../inc/acf.php:67
 msgid "Theme Settings"
 msgstr ""
 
-msgid "Footer Menu"
+#: ../inc/helpers.php:81
+msgid "Previous"
+msgstr ""
+
+#: ../inc/helpers.php:82
+msgid "Next"
+msgstr ""
+
+#: ../inc/helpers.php:83
+msgid "Posts navigation"
+msgstr ""
+
+#: ../inc/helpers.php:84
+msgid "Posts"
+msgstr ""
+
+#: ../inc/security.php:45
+msgid "Invalid credentials."
+msgstr ""
+
+#. translators: %s: constant name
+#: ../inc/security.php:66
+msgid "Security: add %s to wp-config.php to disable the built-in theme and plugin file editor."
+msgstr ""
+
+#: ../inc/seo.php:46, ../search.php:9
+msgid "Search results for: %s"
+msgstr ""
+
+#: ../inc/seo.php:210
+msgid "Home"
+msgstr ""
+
+#: ../inc/seo.php:227
+msgid "404 Not Found"
+msgstr ""
+
+#: ../inc/seo.php:225
+msgid "Search: %s"
+msgstr ""
+
+#: ../inc/seo.php:242, ../inc/seo.php:256
+msgid "Breadcrumb"
+msgstr ""
+
+#: ../inc/setup.php:25, ../template-parts/navigation/nav-primary.php:7
+msgid "Primary Menu"
+msgstr ""
+
+#: ../single.php:25
+msgid "By"
+msgstr ""
+
+#: ../template-parts/content/content-none.php:6
+msgid "Nothing found"
+msgstr ""
+
+#: ../template-parts/content/content-none.php:9
+msgid "Try searching or browse the homepage."
+msgstr ""
+
+#: ../template-parts/content/content-page.php:9
+msgid "Page navigation"
+msgstr ""
+
+#: ../template-parts/content/content.php:31, ../templates/template-styleguide.php:111
+msgid "Read more"
+msgstr ""
+
+#: ../template-parts/navigation/nav-primary.php:23
+msgid "Toggle navigation"
+msgstr ""
+
+#: ../templates/template-blank.php:3
+msgid "Blank (no header/footer)"
+msgstr ""
+
+#: ../templates/template-full-width.php:3
+msgid "Full Width"
+msgstr ""
+
+#: ../templates/template-styleguide.php:3
+msgid "Style Guide"
+msgstr ""
+
+#: ../templates/template-styleguide.php:13
+msgid "Access restricted."
+msgstr ""
+
+#: ../templates/template-styleguide.php:93
+msgid "Primary Button"
+msgstr ""
+
+#: ../templates/template-styleguide.php:94
+msgid "Secondary Button"
+msgstr ""
+
+#: ../templates/template-styleguide.php:95
+msgid "Disabled"
 msgstr ""
