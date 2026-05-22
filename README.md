@@ -11,34 +11,40 @@ WordPress hybrid starter theme for software house projects. Classic PHP template
 | **Bundler** | Vite 6 |
 | **CSS** | Tailwind CSS 3 |
 | **Block editor** | theme.json v3 |
+| **PHP linting** | PHPCS + WordPress Coding Standards |
+| **PHP analysis** | PHPStan level 5 |
+| **JS linting** | ESLint 9 |
+| **Formatting** | Prettier 3 |
 
 ## Requirements
 
-- Node 18+
-- npm 9+
+- Node 18+, npm 9+
+- PHP 8.1+ with Composer
 - Local WordPress install (e.g. Local by Flywheel)
 
 ## Quick start
 
 ```bash
 npm install
-npm run dev      # Vite dev server + HMR, auto-detects WordPress URL
-npm run build    # Production build → dist/
+composer install     # PHP code quality tools (PHPCS, PHPStan)
+npm run dev          # Vite dev server + HMR
+npm run build        # Production build → dist/
 ```
 
-> Dev mode is detected automatically via a `.vite-dev` marker file — no changes to `wp-config.php` needed.
-> Override: `define('VITE_DEV_MODE', true)` in `wp-config.php` still works.
+> Dev mode is detected automatically via a `.vite-dev` marker file — no `wp-config.php` changes needed.
 
 ## Key features
 
-- **Vite HMR** — instant CSS/JS updates in WordPress dev mode
-- **Manifest-based asset versioning** — hashed filenames in production
-- **SEO suite** — JSON-LD (WebSite, Organization, Article, BreadcrumbList), OG, Twitter Cards, canonical; defers to Yoast/RankMath when active
-- **Performance** — WP head cleanup, per-block CSS, lazy images, conditional CF7 assets, query string removal
+- **Vite HMR** — instant CSS/JS updates in WordPress dev mode; manifest-based hashed filenames in production
+- **SEO suite** — JSON-LD (WebSite, Organization, Article, BreadcrumbList), OG, Twitter Cards, canonical; auto-defers to Yoast/RankMath when active
+- **Security** — HTTP security headers (CSP, HSTS, X-Frame-Options, Permissions-Policy), user enumeration prevention, REST API hardening, generic login errors
+- **GTM + Consent Mode v2** — Google Tag Manager with all consent states defaulting to `denied`; required for GA4/Ads in the EU since March 2024
+- **Performance** — WP head cleanup, per-block CSS, lazy images with CLS prevention, conditional CF7 assets, CSS preload hint for LCP
 - **ACF helpers** — `st_get_field()`, `st_acf_image()`, `st_acf_link()` with graceful fallbacks when ACF is inactive
 - **WooCommerce** — wrapper swap, breadcrumb integration, `woocommerce.css` loaded only on WC pages
 - **WPML / Polylang** — hreflang tags, `st_language_switcher()` helper
 - **Block editor** — `editor.css` mirrors frontend styles, `theme.json` palette + font sizes, allowed block whitelist
+- **CI/CD** — GitHub Actions (PHP lint + PHPCS + PHPStan, ESLint + Prettier, Vite build); rsync deployment to staging/production
 
 ## Figma → Theme workflow
 
@@ -62,6 +68,18 @@ npm run build    # Production build → dist/
 | Repeatable section (hero, features grid) | `template-parts/` PHP file + ACF field group |
 | Client-editable content section | Block pattern in `inc/blocks.php` |
 | Page-specific layout | `templates/template-{name}.php` |
+
+## Code quality
+
+```bash
+npm run lint:js        # ESLint
+npm run format         # Prettier (write)
+npm run format:check   # Prettier (CI check)
+composer run lint      # PHPCS — WordPress Coding Standards
+composer run analyse   # PHPStan level 5
+```
+
+Pre-commit hooks (Husky + lint-staged) auto-run Prettier and ESLint on staged JS/CSS files, and `php -l` on staged PHP files.
 
 ## Customization
 
@@ -97,31 +115,78 @@ All user-facing strings use `__()`, `_e()`, `esc_html__()` with the `starter-the
 npm run makepot   # → languages/starter-theme.pot
 ```
 
-Then open the `.pot` file in **PoEdit** or install **Loco Translate** (WordPress plugin) for in-browser translation. Compiled `.mo` / `.po` files live in `languages/` and are excluded from git (add them to the deploy rsync).
+Open the `.pot` in **PoEdit** or use **Loco Translate** for in-browser translation. Compiled `.mo`/`.po` files are excluded from git — include them in the deploy rsync.
+
+### GTM + Analytics
+
+Add to `wp-config.php` per project:
+
+```php
+define('ST_GTM_ID', 'GTM-XXXXXXX');   // enables GTM with Consent Mode v2 defaults
+```
+
+Consent Mode v2 defaults all consent states to `denied`. Your CMP (Cookiebot, CookieYes, or custom) must call `gtag('consent', 'update', {...})` after user acceptance. To disable consent defaults (non-EU sites):
+
+```php
+define('ST_GTM_CONSENT_MODE', false);
+```
 
 ## File map
 
 | Path | Purpose |
 |------|---------|
+| `inc/enqueue.php` | Vite manifest loader, dev/prod switching, asset enqueuing |
 | `inc/setup.php` | `add_theme_support`, nav menus, image sizes |
-| `inc/enqueue.php` | Vite manifest loader, asset enqueuing |
 | `inc/seo.php` | Meta tags, OG, Twitter Cards, JSON-LD, breadcrumbs |
 | `inc/performance.php` | WP head cleanup, font load, lazy images, CF7 |
-| `inc/blocks.php` | Allowed block types, duotone disable |
+| `inc/security.php` | HTTP security headers, user enumeration prevention, REST API hardening |
+| `inc/gtm.php` | Google Tag Manager + Consent Mode v2 |
+| `inc/blocks.php` | Allowed block types whitelist, duotone disable |
 | `inc/acf.php` | ACF helpers, Options Page registration |
 | `inc/woocommerce.php` | WC wrapper swap, breadcrumb integration |
 | `inc/multilang.php` | hreflang tags, `st_language_switcher()` |
 | `inc/helpers.php` | `st_responsive_image()`, `st_svg()`, `st_pagination()` |
 | `assets/src/css/app.css` | Tailwind layers + WP alignment + component classes |
-| `assets/src/css/editor.css` | Block editor mirror styles |
+| `assets/src/css/editor.css` | Block editor mirror styles (no Preflight) |
 | `assets/src/css/woocommerce.css` | WooCommerce UI overrides |
-| `theme.json` | Color palette, font sizes, layout widths |
+| `theme.json` | Design token source of truth — color palette, font sizes, layout widths |
+| `phpcs.xml` | PHPCS config — WordPress Coding Standards, `st_` prefix |
+| `phpstan.neon` | PHPStan level 5 config with WordPress extension |
 | `acf-json/` | ACF field group JSON sync (auto-saved by ACF Pro) |
+| `languages/` | Translation files — `.pot` tracked, `.po`/`.mo` excluded from git |
+
+## Deployment
+
+### GitHub Actions
+
+- **CI** (`.github/workflows/ci.yml`) — runs on every push/PR: PHP syntax + PHPCS, PHPStan, ESLint + Prettier check, Vite build
+- **Deploy** (`.github/workflows/deploy.yml`) — manual trigger; builds assets and deploys via rsync over SSH to staging or production
+
+Required GitHub Secrets per environment (staging/production):
+
+| Secret | Description |
+|--------|-------------|
+| `STAGING_SSH_HOST` | Server hostname |
+| `STAGING_SSH_USER` | SSH user |
+| `STAGING_SSH_PORT` | SSH port (default 22) |
+| `STAGING_SSH_KEY` | Private key content (ed25519 recommended) |
+| `STAGING_DEPLOY_PATH` | Absolute path to theme on server |
+
+See `.env.example` for the full list. Mirror the same set for `PRODUCTION_*`.
+
+### Pre-deploy checklist
+
+- [ ] `npm run build` — `dist/` generated, `.vite-dev` removed
+- [ ] `define('DISALLOW_FILE_EDIT', true)` in `wp-config.php`
+- [ ] `define('ST_GTM_ID', 'GTM-XXXXXXX')` in `wp-config.php`
+- [ ] Yoast SEO or RankMath activated (SEO meta auto-defers)
+- [ ] Permalink structure set to `/%postname%/`
+- [ ] `.htaccess` / Nginx cache headers configured
+- [ ] Compiled `.mo` translation files included in deploy
 
 ## Using as a project base
 
-**GitHub Template** (recommended):
-Use the green `Use this template` button to create a new repo with a clean history.
+**GitHub Template** (recommended): use the `Use this template` button — creates a new repo with clean history.
 
 **Manual clone:**
 ```bash
@@ -142,3 +207,4 @@ git init && git add . && git commit -m "Initial commit from starter-theme"
 | WPML | hreflang, language switcher |
 | Polylang | hreflang, language switcher |
 | Contact Form 7 | Assets loaded only on pages with `[contact-form-7]` shortcode |
+| Cookiebot / CookieYes | Consent Mode v2 update via GTM template or direct integration |
