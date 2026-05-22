@@ -11,6 +11,7 @@ foreach ([
     'inc/acf.php',
     'inc/woocommerce.php',
     'inc/multilang.php',
+    'inc/security.php',
 ] as $file) {
     require_once get_template_directory() . '/' . $file;
 }
