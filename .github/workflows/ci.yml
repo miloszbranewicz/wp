@@ -7,16 +7,31 @@ on:
 
 jobs:
   php-lint:
-    name: PHP Syntax
+    name: PHP Syntax + PHPCS
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
+          tools: composer, phpcs, wp-coding-standards/wpcs:3.1.0
           coverage: none
       - name: Check PHP syntax
-        run: find . -name "*.php" -not -path "*/node_modules/*" -not -path "*/dist/*" | xargs php -l
+        run: find . -name "*.php" -not -path "*/node_modules/*" -not -path "*/dist/*" -not -path "*/vendor/*" | xargs php -l
+      - name: Run PHPCS
+        run: phpcs --standard=phpcs.xml
+
+  js-lint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run lint:js
 
   build:
     name: Vite Build

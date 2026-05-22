@@ -9,12 +9,25 @@
     "postdev": "node -e \"try{require('fs').unlinkSync('.vite-dev')}catch(e){}\"",
     "build": "vite build",
     "postbuild": "node -e \"try{require('fs').unlinkSync('.vite-dev')}catch(e){}\"",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint:js": "eslint assets/src/js",
+    "lint:js:fix": "eslint assets/src/js --fix",
+    "lint:php": "php -l $(find . -name '*.php' -not -path '*/node_modules/*' -not -path '*/dist/*' -not -path '*/vendor/*')",
+    "lint": "npm run lint:js && npm run lint:php",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "assets/src/js/**/*.js": "eslint",
+    "**/*.php": "php -l"
   },
   "devDependencies": {
+    "@eslint/js": "^9.0.0",
     "@tailwindcss/forms": "^0.5.9",
     "@tailwindcss/typography": "^0.5.15",
     "autoprefixer": "^10.4.20",
+    "eslint": "^9.0.0",
+    "husky": "^9.0.0",
+    "lint-staged": "^15.0.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
     "vite": "^6.0.7",
