@@ -6,11 +6,12 @@ defined('ABSPATH') || exit;
  * Outputs width+height to prevent CLS.
  *
  * @param int    $attachment_id
- * @param string $size     Main size (e.g. 'card')
- * @param string $size_2x  Retina size (e.g. 'card-2x'), pass '' to skip srcset
- * @param string $class    CSS classes
+ * @param string $size      Main size (e.g. 'card')
+ * @param string $size_2x   Retina size (e.g. 'card-2x'), pass '' to skip srcset
+ * @param string $class     CSS classes
+ * @param bool   $priority  Set true for the LCP image — adds fetchpriority="high", loading="eager"
  */
-function st_responsive_image(int $attachment_id, string $size = 'card', string $size_2x = 'card-2x', string $class = ''): string {
+function st_responsive_image(int $attachment_id, string $size = 'card', string $size_2x = 'card-2x', string $class = '', bool $priority = false): string {
     if (! $attachment_id) {
         return '';
     }
@@ -34,7 +35,9 @@ function st_responsive_image(int $attachment_id, string $size = 'card', string $
     $class = $class ? ' class="' . esc_attr($class) . '"' : '';
 
     $attrs  = ' width="' . (int) $width . '" height="' . (int) $height . '"';
-    $attrs .= ' loading="lazy" decoding="async"';
+    $attrs .= $priority
+        ? ' loading="eager" decoding="sync" fetchpriority="high"'
+        : ' loading="lazy" decoding="async"';
     $attrs .= $srcset ? ' srcset="' . $srcset . '"' : '';
 
     return '<img src="' . esc_url($src) . '" alt="' . $alt . '"' . $attrs . $class . '>';

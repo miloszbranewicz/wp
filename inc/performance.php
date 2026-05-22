@@ -35,12 +35,16 @@ add_action('wp_enqueue_scripts', function (): void {
 }, 99);
 
 // --- Lazy load & CLS prevention for images ---
+// Preserve WP 6.3+ native fetchpriority="high" / loading="eager" on LCP candidates.
 add_filter('wp_get_attachment_image_attributes', function (array $attr, $attachment, $size): array {
     if (is_admin()) {
         return $attr;
     }
-    $attr['loading']  = 'lazy';
-    $attr['decoding'] = 'async';
+    // Don't override if WP (or st_responsive_image $priority flag) already set eager/fetchpriority
+    if (! isset($attr['fetchpriority'])) {
+        $attr['loading'] = $attr['loading'] ?? 'lazy';
+    }
+    $attr['decoding'] = $attr['decoding'] ?? 'async';
     return $attr;
 }, 10, 3);
 

@@ -44,7 +44,12 @@ add_action('wp_enqueue_scripts', function (): void {
         $app_css = st_vite_asset('assets/src/css/app.css');
 
         if ($app_css) {
-            wp_enqueue_style('app-css', $theme_uri . '/dist/' . $app_css, [], null);
+            $css_url = $theme_uri . '/dist/' . $app_css;
+            wp_enqueue_style('app-css', $css_url, [], null);
+            // Preload hint — browser discovers CSS before render-blocking parse
+            add_action('wp_head', function () use ($css_url): void {
+                echo '<link rel="preload" href="' . esc_url($css_url) . '" as="style" fetchpriority="high">' . "\n";
+            }, 1);
         }
         if ($app_js) {
             wp_enqueue_script('app-js', $theme_uri . '/dist/' . $app_js, [], null, true);
