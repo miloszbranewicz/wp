@@ -1,0 +1,82 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  deploy:
+    name: Deploy to ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Build assets
+        run: |
+          npm ci
+          npm run build
+
+      - name: Write SSH key
+        run: |
+          mkdir -p ~/.ssh
+          if [ "${{ inputs.environment }}" = "production" ]; then
+            echo "${{ secrets.PRODUCTION_SSH_KEY }}" > ~/.ssh/deploy_key
+          else
+            echo "${{ secrets.STAGING_SSH_KEY }}" > ~/.ssh/deploy_key
+          fi
+          chmod 600 ~/.ssh/deploy_key
+
+      - name: Set deploy variables
+        id: vars
+        run: |
+          if [ "${{ inputs.environment }}" = "production" ]; then
+            echo "host=${{ secrets.PRODUCTION_SSH_HOST }}"   >> $GITHUB_OUTPUT
+            echo "user=${{ secrets.PRODUCTION_SSH_USER }}"   >> $GITHUB_OUTPUT
+            echo "port=${{ secrets.PRODUCTION_SSH_PORT || '22' }}" >> $GITHUB_OUTPUT
+            echo "path=${{ secrets.PRODUCTION_DEPLOY_PATH }}" >> $GITHUB_OUTPUT
+          else
+            echo "host=${{ secrets.STAGING_SSH_HOST }}"   >> $GITHUB_OUTPUT
+            echo "user=${{ secrets.STAGING_SSH_USER }}"   >> $GITHUB_OUTPUT
+            echo "port=${{ secrets.STAGING_SSH_PORT || '22' }}" >> $GITHUB_OUTPUT
+            echo "path=${{ secrets.STAGING_DEPLOY_PATH }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Deploy via rsync
+        run: |
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ steps.vars.outputs.port }} -o StrictHostKeyChecking=no" \
+            --exclude='.git/'        \
+            --exclude='.github/'     \
+            --exclude='.husky/'      \
+            --exclude='node_modules/' \
+            --exclude='vendor/'      \
+            --exclude='assets/src/'  \
+            --exclude='.env'         \
+            --exclude='*.log'        \
+            ./ "${{ steps.vars.outputs.user }}@${{ steps.vars.outputs.host }}:${{ steps.vars.outputs.path }}/"
+
+      - name: Flush WP cache
+        continue-on-error: true
+        run: |
+          ssh -i ~/.ssh/deploy_key \
+              -p ${{ steps.vars.outputs.port }} \
+              -o StrictHostKeyChecking=no \
+              ${{ steps.vars.outputs.user }}@${{ steps.vars.outputs.host }} \
+              "wp cache flush --path=${{ steps.vars.outputs.path }} --allow-root 2>/dev/null || true"
+
+      - name: Cleanup SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
