@@ -1,0 +1,19 @@
+{
+    "apiVersion": 3,
+    "name": "starter-theme/slider",
+    "title": "Slider",
+    "category": "theme",
+    "icon": "slides",
+    "description": "Image slider powered by Swiper. Add images as inner blocks.",
+    "attributes": {
+        "autoplay": { "type": "boolean", "default": true },
+        "loop":     { "type": "boolean", "default": true },
+        "speed":    { "type": "integer", "default": 500 }
+    },
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"]
+    },
+    "allowedBlocks": ["core/image"],
+    "render": "file:./render.php"
+}
