@@ -19,7 +19,10 @@ function st_vite_asset(string $entry): string {
 }
 
 function st_is_vite_dev(): bool {
-    return defined('VITE_DEV_MODE') && VITE_DEV_MODE;
+    if (defined('VITE_DEV_MODE')) {
+        return (bool) VITE_DEV_MODE;
+    }
+    return file_exists(get_template_directory() . '/.vite-dev');
 }
 
 add_action('wp_enqueue_scripts', function (): void {

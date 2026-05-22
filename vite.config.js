@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   root: '.',
-  base: '/wp-content/themes/starter-theme/dist/',
+  base: command === 'build' ? '/wp-content/themes/starter-theme/dist/' : '/',
   build: {
     outDir: 'dist',
     manifest: true,
@@ -48,4 +48,4 @@ export default defineConfig({
   css: {
     devSourcemap: true,
   },
-});
+}));

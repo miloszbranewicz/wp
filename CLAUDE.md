@@ -12,15 +12,15 @@ WordPress hybrid starter theme (classic PHP + block editor). SEO & performance f
 ## Development workflow
 
 ```bash
-# Start Vite dev server (HMR)
+# Start Vite dev server (HMR) — auto-creates .vite-dev marker, theme detects dev mode
 npm run dev
 
-# Add to wp-config.php during dev:
-define('VITE_DEV_MODE', true);
-
-# Production build
+# Production build — removes .vite-dev marker, theme switches to dist/
 npm run build
 ```
+
+> No changes to `wp-config.php` needed. Dev mode is detected automatically via `.vite-dev` file.
+> Override: `define('VITE_DEV_MODE', true)` in `wp-config.php` still works if needed.
 
 ## File map
 
@@ -87,8 +87,7 @@ Edit `theme.json` → `settings.color.palette`. CSS variables are auto-generated
 
 ## Deployment checklist
 
-- [ ] `npm run build` — dist/ generated
-- [ ] `VITE_DEV_MODE` constant removed from wp-config.php
+- [ ] `npm run build` — dist/ generated, `.vite-dev` marker removed
 - [ ] `.htaccess` / Nginx cache headers configured
 - [ ] Yoast SEO or RankMath activated (SEO meta falls back to built-in if neither present)
 - [ ] Permalink structure set to `/%postname%/`
