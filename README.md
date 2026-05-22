@@ -40,6 +40,29 @@ npm run build    # Production build → dist/
 - **WPML / Polylang** — hreflang tags, `st_language_switcher()` helper
 - **Block editor** — `editor.css` mirrors frontend styles, `theme.json` palette + font sizes, allowed block whitelist
 
+## Figma → Theme workflow
+
+1. Designer delivers Figma file with **Variables** (colors, typography, spacing)
+2. Dev extracts color hex values → updates `theme.json` → `settings.color.palette`
+   - `slug` becomes the CSS class suffix: `text-primary`, `bg-neutral-100`
+   - CSS custom property auto-generated: `--wp--preset--color--{slug}`
+3. Mirror new slugs in `tailwind.config.js` → `theme.extend.colors`:
+   ```js
+   'primary': 'var(--wp--preset--color--primary, #2563eb)',
+   ```
+4. For typography: update `theme.json` → `settings.typography.fontFamilies` + `tailwind.config.js` → `fontFamily.sans`
+5. Run `npm run build` (or `npm run dev` for live reload)
+6. **Verify in browser**: create a WordPress page, assign the **Style Guide** template → all tokens and components render live from `theme.json`
+
+### Building components
+
+| Use case | Where |
+|----------|-------|
+| Reusable utility class (button, badge) | `@layer components` in `assets/src/css/app.css` |
+| Repeatable section (hero, features grid) | `template-parts/` PHP file + ACF field group |
+| Client-editable content section | Block pattern in `inc/blocks.php` |
+| Page-specific layout | `templates/template-{name}.php` |
+
 ## Customization
 
 ### Font
