@@ -10,3 +10,7 @@ vendor/
 .phpstan/
 languages/*.po
 languages/*.mo
+var/
+.agents
+.claude
+skills-lock.json

@@ -34,3 +34,27 @@ add_action('after_setup_theme', function (): void {
 
 add_filter('excerpt_length', fn() => 20);
 add_filter('excerpt_more', fn() => '&hellip;');
+
+add_action('init', function (): void {
+    $theme_uri     = get_template_directory_uri();
+    $style_handles = [];
+
+    if (st_is_vite_dev()) {
+        wp_register_script('starter-theme-slider', 'http://localhost:5173/assets/src/js/slider.js', [], null, true);
+    } else {
+        $slider_js = st_vite_asset('assets/src/js/slider.js');
+        if ($slider_js) {
+            wp_register_script('starter-theme-slider', $theme_uri . '/dist/' . $slider_js, [], null, true);
+        }
+        foreach (st_vite_asset_css_files('assets/src/js/slider.js') as $i => $css_file) {
+            $handle = 'starter-theme-slider-' . $i;
+            wp_register_style($handle, $theme_uri . '/dist/' . $css_file, [], null);
+            $style_handles[] = $handle;
+        }
+    }
+
+    register_block_type(__DIR__ . '/../blocks/slider', [
+        'view_script_handles' => ['starter-theme-slider'],
+        'style_handles'       => $style_handles,
+    ]);
+});

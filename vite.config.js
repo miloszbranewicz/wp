@@ -16,6 +16,7 @@ export default defineConfig(({ command }) => ({
         editor: resolve(__dirname, 'assets/src/js/editor.js'),
         'editor-css': resolve(__dirname, 'assets/src/css/editor.css'),
         'woocommerce-css': resolve(__dirname, 'assets/src/css/woocommerce.css'),
+        slider: resolve(__dirname, 'assets/src/js/slider.js'),
       },
       external: [
         /^@wordpress\/.*/,
@@ -27,6 +28,9 @@ export default defineConfig(({ command }) => ({
           '@wordpress/hooks': 'wp.hooks',
           '@wordpress/dom-ready': 'wp.domReady',
           '@wordpress/blocks': 'wp.blocks',
+          '@wordpress/block-editor': 'wp.blockEditor',
+          '@wordpress/components': 'wp.components',
+          '@wordpress/element': 'wp.element',
           '@wordpress/edit-post': 'wp.editPost',
           'react': 'React',
           'react-dom': 'ReactDOM',

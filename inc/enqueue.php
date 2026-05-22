@@ -2,20 +2,26 @@
 defined('ABSPATH') || exit;
 
 /**
- * Reads the Vite manifest and returns the hashed filename for a given entry.
+ * Shared Vite manifest cache — avoids multiple file reads per request.
  */
-function st_vite_asset(string $entry): string {
+function st_vite_manifest(): array {
     static $manifest = null;
-
     if ($manifest === null) {
-        $manifest_path = get_template_directory() . '/dist/.vite/manifest.json';
-        if (! file_exists($manifest_path)) {
-            return '';
-        }
-        $manifest = json_decode(file_get_contents($manifest_path), true);
+        $path = get_template_directory() . '/dist/.vite/manifest.json';
+        $manifest = file_exists($path)
+            ? (json_decode(file_get_contents($path), true) ?? [])
+            : [];
     }
+    return $manifest;
+}
 
-    return $manifest[$entry]['file'] ?? '';
+function st_vite_asset(string $entry): string {
+    return st_vite_manifest()[$entry]['file'] ?? '';
+}
+
+/** Returns CSS files emitted by Vite for a JS entry (e.g. when the entry imports CSS). */
+function st_vite_asset_css_files(string $entry): array {
+    return st_vite_manifest()[$entry]['css'] ?? [];
 }
 
 function st_is_vite_dev(): bool {
@@ -77,9 +83,11 @@ add_action('wp_enqueue_scripts', function (): void {
 add_action('enqueue_block_editor_assets', function (): void {
     $theme_uri = get_template_directory_uri();
 
+    $editor_deps = ['wp-blocks', 'wp-dom-ready', 'wp-edit-post', 'wp-block-editor', 'wp-components', 'wp-element'];
+
     if (st_is_vite_dev()) {
         wp_enqueue_style('editor-css', 'http://localhost:5173/assets/src/css/editor.css', [], null);
-        wp_enqueue_script('editor-js', 'http://localhost:5173/assets/src/js/editor.js', ['wp-blocks', 'wp-dom-ready', 'wp-edit-post'], null, true);
+        wp_enqueue_script('editor-js', 'http://localhost:5173/assets/src/js/editor.js', $editor_deps, null, true);
     } else {
         $editor_css = st_vite_asset('assets/src/css/editor.css');
         $editor_js  = st_vite_asset('assets/src/js/editor.js');
@@ -88,7 +96,7 @@ add_action('enqueue_block_editor_assets', function (): void {
             wp_enqueue_style('editor-css', $theme_uri . '/dist/' . $editor_css, [], null);
         }
         if ($editor_js) {
-            wp_enqueue_script('editor-js', $theme_uri . '/dist/' . $editor_js, ['wp-blocks', 'wp-dom-ready', 'wp-edit-post'], null, true);
+            wp_enqueue_script('editor-js', $theme_uri . '/dist/' . $editor_js, $editor_deps, null, true);
         }
     }
 });
@@ -102,7 +110,7 @@ add_action('after_setup_theme', function (): void {
 
 // Vite scripts must be ES modules for HMR to work
 add_filter('script_loader_tag', function (string $tag, string $handle): string {
-    if (in_array($handle, ['vite-client', 'app-js', 'editor-js'], true)) {
+    if (in_array($handle, ['vite-client', 'app-js', 'editor-js', 'starter-theme-slider'], true)) {
         $tag = str_replace(' src=', ' type="module" crossorigin src=', $tag);
     }
     return $tag;

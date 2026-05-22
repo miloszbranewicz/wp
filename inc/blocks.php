@@ -50,6 +50,8 @@ add_filter('allowed_block_types_all', function (bool|array $allowed_blocks, WP_B
         'core/navigation-submenu',
         // Template parts
         'core/template-part',
+        // Theme custom blocks
+        'starter-theme/slider',
         // ACF blocks (loaded dynamically if plugin active)
         ...(function_exists('acf_register_block_type') ? st_get_acf_block_names() : []),
     ];
