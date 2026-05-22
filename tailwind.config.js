@@ -8,6 +8,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
+      },
       colors: {
         primary:        'var(--wp--preset--color--primary, #2563eb)',
         'primary-dark': 'var(--wp--preset--color--primary-dark, #1d4ed8)',

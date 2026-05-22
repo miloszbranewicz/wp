@@ -48,6 +48,8 @@ add_filter('wp_get_attachment_image_attributes', function (array $attr, $attachm
 add_action('wp_head', function (): void {
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+    // Inter — default font. For GDPR/self-hosted: npm install @fontsource/inter and import in app.js instead.
+    echo '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">' . "\n";
     echo '<link rel="dns-prefetch" href="//www.google-analytics.com">' . "\n";
     echo '<link rel="dns-prefetch" href="//www.googletagmanager.com">' . "\n";
 }, 1);
